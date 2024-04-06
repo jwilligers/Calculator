@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PolyLib;
 
 namespace MajorProject
 {
@@ -12,7 +13,7 @@ namespace MajorProject
         {
         }
 
-        override public double Value()
+        override public Complex Value()
         {
             return left.Value() - right.Value();
         }

@@ -123,7 +123,7 @@ namespace MajorProject
             {
                 scanner.MoveOn();
                 Expression factor = ReadFactor();
-                return new Subtraction(new Number(new Complex(0.0)), factor);
+                return new Subtraction(new Number(0.0), factor);
             } //same as 0-factor
             else
             {
@@ -135,37 +135,9 @@ namespace MajorProject
             Expression first = ReadAtom();
             if (scanner.Current().ToString() == "^")
             {  // "^" means the token to the left is raised to the token on the right              
-                scanner.MoveOn();
-                Expression second = ReadFactor();
-                return new Power(first, second);
-            }
-            else
-            {
-                return first;
-            }
-        }
-        public Expression ReadNpr()
-        {
-            Expression first = ReadAtom();
-            if (scanner.Current().ToString() == "P")
-            {  // "P" means permutations
-                scanner.MoveOn();
-                Expression second = ReadFactor();
-                return new Power(first, second);
-            }
-            else
-            {
-                return first;
-            }
-        }
-        public Expression ReadNcr()
-        {
-            Expression first = ReadAtom();
-            if (scanner.Current().ToString() == "C")
-            {  // "P" means combinations
-                scanner.MoveOn();
-                Expression second = ReadFactor();
-                return new Power(first, second);
+                    scanner.MoveOn();
+                    Expression second = ReadFactor();
+                    return new Number(Complex.Pow(first.Value(), second.Value()));            
             }
             else
             {
@@ -184,34 +156,20 @@ namespace MajorProject
             {
                 string name = scanner.Current().ToString();
                 scanner.MoveOn();
-                switch (name.ToLower()) // special words that cannot be variables
+                switch (name) // special words that cannot be variables
                 {
                     case "e": // constant e
                         return new Number(new Complex(Math.E));
                     case "i":
                         return new Number(new Complex(0, 1));
                     case "pi": //constant pi
-                        return new Number(new Complex(Math.PI));
-                    case "deg": //constant pi
-                        return new Number(new Complex(Math.PI/180));
+                        return new Number(new Complex(Math.PI));/*
                     case "sin": // sin
-                        return new Sin(ReadAtom());
+                        return new Number(new Complex.Sin(ReadAtom()));
                     case "cos": // cos
-                        return new Cos(ReadAtom());
+                        return Complex.Cos(ReadAtom());
                     case "tan": // tan
-                        return new Tan(ReadAtom());
-                    case "sinh": // hyperbolic sin
-                        return new Sinh(ReadAtom());
-                    case "cosh": // hyperbolic cos
-                        return new Cosh(ReadAtom());
-                    case "tanh": // hyperbolic tan
-                        return new Tanh(ReadAtom());
-                    case "sech": // hyperbolic sec
-                        return new Sech(ReadAtom());
-                    case "csch": // hyperbolic cosec
-                        return new Csch(ReadAtom());
-                    case "coth": // hyperbolic cot
-                        return new Coth(ReadAtom());
+                        return Complex.Tan(ReadAtom());
                     case "asin": // inverse sin
                         return new ASin(ReadAtom());
                     case "acos": // inverse cos
@@ -219,36 +177,11 @@ namespace MajorProject
                     case "atan": // inverse tan
                         return new ATan(ReadAtom());
                     case "exp": // exponential
-                        return new Exp(ReadAtom());
-                    case "log": // log base 10
-                        return new Log(ReadAtom());
+                        return Complex.Exp(ReadAtom());
                     case "ln": // log base e
-                        return new Ln(ReadAtom());
-                    case "fact": // Factorial
-                        return new Fact(ReadAtom());
-                    case "conj": // Conjugate
-                        return new Conj(ReadAtom());
-                    case "re": // Real component
-                        return new Re(ReadAtom());
-                    case "im": // Imaginary component
-                        return new Im(ReadAtom());
-                    case "arg": // Argument
-                        return new Arg(ReadAtom());
-                    case "sqrt": // Square Root
-                        return new Sqrt(ReadAtom());
-                    case "square": // Square
-                        return new Square(ReadAtom());
-                    case "abs": // Absolute Value
-                        return new Abs(ReadAtom());
-                    case "ceil": // Ceiling
-                        return new Ceil(ReadAtom());
-                    case "floor": // Floor
-                        return new Floor(ReadAtom());
-                    case "round": // Round
-                        return new Round(ReadAtom());
-                    case "inv": // Inverse
-                        return new Inv(ReadAtom());
-                    
+                        return Complex.Log(ReadAtom());
+                    case "fact": // factorial
+                        return new Fact(ReadAtom());*/
                     default:
                         return new Variable(table, name);
                    }      

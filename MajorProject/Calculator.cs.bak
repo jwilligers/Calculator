@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using PolyLib;
 namespace MajorProject
 {
     public partial class Calculator : Form
@@ -19,6 +20,8 @@ namespace MajorProject
             // FormSplash splash = new FormSplash();
             // splash.Show();
             InitializeComponent();
+            Polynomial P = new Polynomial(5,-4,0,1);
+            Polynomial p1 = Polynomial.Derivative(P);
             //MessageBox.Show(p1.ToString());
             //MessageBox.Show(P.Roots().ToString());
             listBox1.Width = 148;
@@ -114,15 +117,8 @@ namespace MajorProject
                 }
                 OutputBox.Text = output;
                 string[] variables = parser.returnValues();
-                Array.Sort(variables);
-                string[] functions = { "sin", "cos", "tan", "conj", "re", "im", "fact", "asin", "acos", "atan", "exp", "ln" };
                 listBox1.Items.AddRange(variables);
-                if (settings.DisplayFunctions)
-                {
-                    listBox1.Items.Add("");
-                    listBox1.Items.AddRange(functions);
-                }
-                listBox1.Sorted = false;
+                listBox1.Sorted = true;
 
             }
             catch (InputException)

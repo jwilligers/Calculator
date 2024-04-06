@@ -1,14 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace PolyLib
 {
-    public class Complex
+    public class Complex:Expression
     {
         double re;
         double im;
+
+        public Complex Value()
+        {
+            return new Complex(re);
+        }
+        public double RealValue()
+        {
+            return re;
+        }
 
         /// <summary>
         /// Contains the real part of a complex number.
@@ -251,6 +261,19 @@ namespace PolyLib
             return Sin(a) / Cos(a);
         }
 
+        public static Complex ATan(Complex a)
+        {
+            return new Complex(Arg(a));
+        }
+        public static Complex ACos(Complex a)
+        {
+            return new Complex(Math.Acos(a.Re));
+        }
+        public static Complex ASin(Complex a)
+        {
+            return new Complex(Math.Asin(a.Re));
+        }
+
         /// <summary>
         /// Hyperbolic cosine of a.
         /// </summary>
@@ -369,11 +392,21 @@ namespace PolyLib
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
+        public static Complex Ln(Complex a)
+        {
+            // Log[|w|]+I*(Arg[w]+2*Pi*k)            
+
+            return new Complex(Math.Log(Abs(a)), Arg(a));
+        }
+        /// <summary>
+        /// Main value of the complex logarithm.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Complex Log(Complex a)
         {
-           // Log[|w|]+I*(Arg[w]+2*Pi*k)            
-            
-            return new Complex(Math.Log(Abs(a)), Arg(a));
+            // Log[|w|]+I*(Arg[w]+2*Pi*k)              
+            return new Complex(Math.Log10(Abs(a)), Arg(a));
         }
 
         /// <summary>
@@ -417,7 +450,15 @@ namespace PolyLib
 
         public static Complex Pow(Complex a, Complex b)
         {
-            return Exp(b * Log(a));
+            return Exp(b * Ln(a));
+        }
+/*        public static Complex Pow(Complex a, Complex b)
+        {
+            return new Complex(Math.Pow(Complex.Abs(a), b.Re));
+        }*/
+        public static Complex Pow(Complex a, double b)
+        {
+            return new Complex(Math.Pow(Complex.Abs(a), b));
         }
 
         public static Complex Pow(double a, Complex b)
@@ -425,11 +466,23 @@ namespace PolyLib
             return Exp(b * Math.Log(a));
         }
 
-        public static Complex Pow(Complex a, double b)
+        /*public static Complex Pow(Complex a, double b)
         {
             return Exp(b * Log(a));
-        }
+        }*/
 
+        public static Complex Ceil(Complex a)
+        {
+            return new Complex(Math.Ceiling(a.Re), Math.Ceiling(a.Im));
+        }
+        public static Complex Floor(Complex a)
+        {
+            return new Complex(Math.Floor(a.Re), Math.Floor(a.Im));
+        }
+        public static Complex Round(Complex a)
+        {
+            return new Complex(Math.Round(a.Re), Math.Round(a.Im));
+        }
         public override string ToString()
         {
             if (this == Complex.Zero) return "0";
@@ -452,7 +505,7 @@ namespace PolyLib
             if (this.Im == 0) im = "";
             else if (this.Im == -1 || this.Im == 1) im = "i";            
             else im = Math.Abs(this.Im).ToString() + "i";
-
+            Console.Write("Complex Number to string: "+re + sign + im);
             return re + sign + im;
         }
 

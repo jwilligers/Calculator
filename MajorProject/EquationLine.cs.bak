@@ -45,7 +45,7 @@ namespace MajorProject
                     try
                     {
                         Complex leftValue = LHS.GetLeft().Value();
-                        return LHS.isolateRight(table, right).Solve();
+                        return LHS.isolateRight(table, right.Value()).Solve();
                     }
                     catch (UnknownVariableException)
                     {

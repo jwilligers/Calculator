@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PolyLib;
 
 namespace MajorProject
 {
     class Number : Expression
     {
-        double value;
+        Complex value;
 
-        public Number(double _value)
+        public Number(Complex _value)
         {
             value = _value;
         }
-        public override double Value()
+        public override Complex Value()
         {
             return value;
+        }
+        public Expression ComplexToNumber(Complex complex)
+        {
+            return new Number(complex);
         }
         override public string ToString()
         {

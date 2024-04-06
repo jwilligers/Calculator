@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PolyLib;
 
 namespace MajorProject
 {
-    class VariableTable:Dictionary<string,double>
+    class VariableTable:Dictionary<string,Complex>
     {
         public VariableTable()
         {
@@ -14,11 +15,11 @@ namespace MajorProject
         {
             return ContainsKey(name);
         }
-        public double lookUpValue(string name)
+        public Complex lookUpValue(string name)
         {
             return this[name];
         }
-        public void setValue(string name, double value)
+        public void setValue(string name, Complex value)
         {
             this[name] = value;
         }

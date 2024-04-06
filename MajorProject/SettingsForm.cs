@@ -31,10 +31,16 @@ namespace MajorProject
             else
             { radioButtonVertical.Checked = true; }
             checkBoxShowVariables.Checked = preferences.DisplayVariables;
+            checkBoxShowFunctions.Checked = preferences.DisplayFunctions;
         }
         private void checkBoxShowVariables_CheckedChanged(object sender, EventArgs e)
         {
             preferences.DisplayVariables = checkBoxShowVariables.Checked;
+            preferences.Save();
+        }
+        private void checkBoxShowFunctions_CheckedChanged(object sender, EventArgs e)
+        {
+            preferences.DisplayFunctions = checkBoxShowFunctions.Checked;
             preferences.Save();
         }
         private void radioButtonHorizontal_CheckedChanged(object sender, EventArgs e)

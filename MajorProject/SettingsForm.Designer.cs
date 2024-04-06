@@ -39,6 +39,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.radioButtonDegrees = new System.Windows.Forms.RadioButton();
             this.radioButtonRadians = new System.Windows.Forms.RadioButton();
+            this.checkBoxShowFunctions = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -120,7 +121,7 @@
             // checkBoxAlwaysOnTop
             // 
             this.checkBoxAlwaysOnTop.AutoSize = true;
-            this.checkBoxAlwaysOnTop.Location = new System.Drawing.Point(13, 36);
+            this.checkBoxAlwaysOnTop.Location = new System.Drawing.Point(12, 58);
             this.checkBoxAlwaysOnTop.Name = "checkBoxAlwaysOnTop";
             this.checkBoxAlwaysOnTop.Size = new System.Drawing.Size(96, 17);
             this.checkBoxAlwaysOnTop.TabIndex = 7;
@@ -161,11 +162,24 @@
             this.radioButtonRadians.UseVisualStyleBackColor = true;
             this.radioButtonRadians.CheckedChanged += new System.EventHandler(this.radioButtonRadians_CheckedChanged);
             // 
+            // checkBoxShowFunctions
+            // 
+            this.checkBoxShowFunctions.AutoSize = true;
+            this.checkBoxShowFunctions.Checked = true;
+            this.checkBoxShowFunctions.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxShowFunctions.Location = new System.Drawing.Point(12, 35);
+            this.checkBoxShowFunctions.Name = "checkBoxShowFunctions";
+            this.checkBoxShowFunctions.Size = new System.Drawing.Size(102, 17);
+            this.checkBoxShowFunctions.TabIndex = 11;
+            this.checkBoxShowFunctions.Text = "Show Functions";
+            this.checkBoxShowFunctions.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(281, 216);
+            this.Controls.Add(this.checkBoxShowFunctions);
             this.Controls.Add(this.radioButtonRadians);
             this.Controls.Add(this.radioButtonDegrees);
             this.Controls.Add(this.label2);
@@ -197,5 +211,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton radioButtonDegrees;
         private System.Windows.Forms.RadioButton radioButtonRadians;
+        private System.Windows.Forms.CheckBox checkBoxShowFunctions;
     }
 }

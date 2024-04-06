@@ -25,13 +25,13 @@ namespace MajorProject
             switch (this.GetType().Name)
             {
                 case "Addition":
-                    return new EquationLine(table, left, new Subtraction(RHS, right));
+                    return new EquationLine(table, left, new Number(right.Value() - RHS.Value()));
                 case "Subtraction":
-                    return new EquationLine(table, left, new Addition(RHS, right));
+                    return new EquationLine(table, left, new Number(RHS.Value() - right.Value()));
                 case "Multiplication":
-                    return new EquationLine(table, left, new Division(RHS, right));
+                    return new EquationLine(table, left, new Number(RHS.Value() / right.Value()));
                 case "Division":
-                    return new EquationLine(table, left, new Multiplication(RHS, right));
+                    return new EquationLine(table, left, new Number(RHS.Value() * right.Value()));
                 case "Power":
                     return new EquationLine(table, new Multiplication(right, new Ln(left)), new Ln(RHS));
                 default:

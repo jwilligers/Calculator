@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PolyLib;
 
 namespace MajorProject
 {
@@ -32,26 +33,30 @@ namespace MajorProject
         }
         public Function Inverse(Expression RHS)
         {
-            switch (this.GetType().Name)
+            switch (this.GetType().Name.ToLower())
             {
-                case "Sin": // sin
+                case "sin": // sin
                     return new ASin(RHS);
-                case "Cos": // cos
+                case "cos": // cos
                     return new ACos(RHS);
-                case "Tan": // tan
+                case "tan": // tan
                     return new ATan(RHS);
-                case "ASin": // inverse sin
+                case "asin": // inverse sin
                     return new Sin(RHS);
-                case "ACos": // inverse cos
+                case "acos": // inverse cos
                     return new Cos(RHS);
-                case "ATan": // inverse tan
+                case "atan": // inverse tan
                     return new Tan(RHS);
-                case "Exp": // exponential
+                case "exp": // exponential
                     return new Ln(RHS);
-                case "Ln": // log base e
+                case "ln": // log base e
                     return new Exp(RHS);
-                case "fact": // factorial
-                    return new Fact(RHS);
+                case "conj": //Conjugate
+                    return new Conj(RHS);
+                case "sqrt":
+                    return new Square(RHS);
+                case "square":
+                    return new Sqrt(RHS);
                 default:
                     throw new Exception("Unknown function");
             }
@@ -65,9 +70,9 @@ namespace MajorProject
             : base(_expr)
         {
         }
-        public override double Value()
+        public override Complex Value()
         {
-                return Round(Math.Sin(expr.Value()));
+            return Complex.Sin(expr.Value());
         }
         override public string ToString()
         {
@@ -82,9 +87,9 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return Round(Math.Cos(expr.Value()));
+            return Complex.Cos(expr.Value());
         }
         override public string ToString()
         {
@@ -99,16 +104,177 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return Round(Math.Tan(expr.Value()));
+            return Complex.Tan(expr.Value());
         }
         override public string ToString()
         {
             return "tan(" + expr.ToString() + ")";
         }
-
     }
+    class Sinh : Function
+    {
+        public Sinh(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Sinh(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "sinh(" + expr.ToString() + ")";
+        }
+    }
+    class Cosh : Function
+    {
+        public Cosh(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Cosh(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "cosh(" + expr.ToString() + ")";
+        }
+    }
+    class Tanh : Function
+    {
+        public Tanh(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Tanh(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "tanh(" + expr.ToString() + ")";
+        }
+    }
+    class Sech : Function
+    {
+        public Sech(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Sech(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "sech(" + expr.ToString() + ")";
+        }
+    }
+    class Csch : Function
+    {
+        public Csch(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Csch(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "csch(" + expr.ToString() + ")";
+        }
+    }
+    class Coth : Function
+    {
+        public Coth(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Coth(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "coth(" + expr.ToString() + ")";
+        }
+    }
+    class Arg : Function
+    {
+        public Arg(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return new Complex(Complex.Arg(expr.Value()));
+        }
+        override public string ToString()
+        {
+            return "arg(" + expr.ToString() + ")";
+        }
+    }
+
+    class Floor : Function
+    {
+        public Floor(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Floor(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "floor(" + expr.ToString() + ")";
+        }
+    }
+    class Ceil : Function
+    {
+        public Ceil(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Ceil(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "ceil(" + expr.ToString() + ")";
+        }
+    }
+    class Round : Function
+    {
+        public Round(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Round(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "round(" + expr.ToString() + ")";
+        }
+    }
+
     class ASin : Function
     {
         public ASin(Expression _expr)
@@ -116,9 +282,10 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return Round(Math.Asin(expr.Value()));
+            return Complex.ASin(expr.Value());
+            //return Math.Asin(expr.Value());
         }
         override public string ToString()
         {
@@ -134,9 +301,11 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return Round(Math.Acos(expr.Value()));
+
+            return Complex.ACos(expr.Value());
+            //return Complex.Acos(expr.Value());
         }
         override public string ToString()
         {
@@ -151,20 +320,55 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
             if (expr.Value() != (Math.PI/2))
             {
-                return Round(Math.Atan(expr.Value()));
+                return Complex.ATan(expr.Value());
+                //return Round(Math.Atan(expr.Value()));
             }
             else
             {
-                return 0;
+                return new Complex(0);
             }
         }
         override public string ToString()
         {
             return "atan(" + expr.ToString() + ")";
+        }
+
+    }
+    class Re : Function
+    {
+        public Re(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return new Complex(expr.Value().Re);
+        }
+        override public string ToString()
+        {
+            return "Re(" + expr.ToString() + ")";
+        }
+
+    }
+    class Im : Function
+    {
+        public Im(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return new Complex(expr.Value().Im);
+        }
+        override public string ToString()
+        {
+            return "Im(" + expr.ToString() + ")";
         }
 
     }
@@ -175,9 +379,9 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return Math.Log(expr.Value());
+            return Complex.Log(expr.Value());
         }
         override public string ToString()
         {
@@ -192,15 +396,32 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return Math.Exp(expr.Value());
+            return Complex.Exp(expr.Value());
         }
 
         override public string ToString()
         {
             return "exp(" + expr.ToString() + ")";
         }
+    }
+    class Log : Function
+    {
+        public Log(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Log(expr.Value()/Complex.Log(new Complex(10)));
+        }
+        override public string ToString()
+        {
+            return "ln(" + expr.ToString() + ")";
+        }
+
     }
     class Fact : Function
     {
@@ -209,9 +430,9 @@ namespace MajorProject
         {
         }
 
-        public override double Value()
+        public override Complex Value()
         {
-            return fact(int.Parse(expr.Value().ToString()));
+            return new Complex(fact(int.Parse(expr.Value().ToString())));
         }
         public int fact(int x)
         {
@@ -229,6 +450,86 @@ namespace MajorProject
         override public string ToString()
         {
             return "fact(" + expr.ToString() + ")";
+        }
+    }
+    class Conj : Function
+    {
+        public Conj(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Conj(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "conj(" + expr.ToString() + ")";
+        }
+    }
+    class Sqrt : Function
+    {
+        public Sqrt(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Sqrt(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "sqrt(" + expr.ToString() + ")";
+        }
+    }
+    class Square : Function
+    {
+        public Square(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Pow(expr.Value(), 2);
+        }
+        override public string ToString()
+        {
+            return "square(" + expr.ToString() + ")";
+        }
+    }
+    class Abs : Function
+    {
+        public Abs(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return new Complex(Complex.Abs(expr.Value()));
+        }
+        override public string ToString()
+        {
+            return "abs(" + expr.ToString() + ")";
+        }
+    }
+    class Inv : Function
+    {
+        public Inv(Expression _expr)
+            : base(_expr)
+        {
+        }
+
+        public override Complex Value()
+        {
+            return Complex.Inv(expr.Value());
+        }
+        override public string ToString()
+        {
+            return "inv(" + expr.ToString() + ")";
         }
     }
 }

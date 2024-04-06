@@ -22,11 +22,11 @@ namespace MajorProject
             return table.hasValue(name);
         }
 
-        public override Complex Value()
+        public Expression Value()
         {
             if (table.hasValue(name))
             {
-                return table.lookUpValue(name);
+                return new Number(table.lookUpValue(name));
             }
             else
             {
