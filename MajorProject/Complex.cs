@@ -503,7 +503,7 @@ namespace PolyLib
             if (this.Im == 0) im = "";
             else if (this.Im == -1 || this.Im == 1) im = "i";            
             else im = Math.Abs(this.Im).ToString() + "i";
-            Console.Write("Complex Number to string: "+re + sign + im);
+            Console.WriteLine("Complex Number to string: "+re + sign + im);
             return re + sign + im;
         }
 

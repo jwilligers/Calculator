@@ -136,13 +136,37 @@ namespace MajorProject
                 Expression second = ReadFactor();
                 return new Power(first, second);
             }
+            else if (scanner.Current().ToString() == "c")
+            {  // "^" means the token to the left is raised to the token on the right              
+                scanner.MoveOn();
+                Expression second = ReadFactor();
+                return new Combination(first, second);
+            }
+            else if (scanner.Current().ToString() == "C")
+            {  // "^" means the token to the left is raised to the token on the right              
+                scanner.MoveOn();
+                Expression second = ReadFactor();
+                return new Combination(first, second);
+            }
+            else if (scanner.Current().ToString() == "p")
+            {  // "^" means the token to the left is raised to the token on the right              
+                scanner.MoveOn();
+                Expression second = ReadFactor();
+                return new Permutation(first, second);
+            }
+            else if (scanner.Current().ToString() == "P")
+            {  // "^" means the token to the left is raised to the token on the right              
+                scanner.MoveOn();
+                Expression second = ReadFactor();
+                return new Permutation(first, second);
+            }
             else
             {
                 return first;
 
 //                return ReadNcr();
             }
-        }
+        }/*
         public Expression ReadNpr()
         {
             Expression first = ReadAtom();
@@ -170,7 +194,7 @@ namespace MajorProject
             {
                 return first;
             }
-        }
+        }*/
         public Expression ReadAtom()
         {
             if (scanner.Current().GetTokenType() == TokenType.Number)
