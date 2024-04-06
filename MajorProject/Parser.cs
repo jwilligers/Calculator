@@ -1,14 +1,11 @@
 ﻿using PolyLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MajorProject
 {
     class Parser
     {
-        
         Scanner scanner;
         VariableTable table;
         public Parser(Scanner _scanner)
@@ -142,6 +139,8 @@ namespace MajorProject
             else
             {
                 return first;
+
+//                return ReadNcr();
             }
         }
         public Expression ReadNpr()
@@ -165,7 +164,7 @@ namespace MajorProject
             {  // "P" means combinations
                 scanner.MoveOn();
                 Expression second = ReadFactor();
-                return new Power(first, second);
+                return new Combination(first, second);
             }
             else
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MajorProject
+﻿namespace MajorProject
 {
     public enum TokenType
     { // there are five types of tokens
