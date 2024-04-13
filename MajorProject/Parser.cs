@@ -163,38 +163,8 @@ namespace MajorProject
             else
             {
                 return first;
-
-//                return ReadNcr();
-            }
-        }/*
-        public Expression ReadNpr()
-        {
-            Expression first = ReadAtom();
-            if (scanner.Current().ToString() == "P")
-            {  // "P" means permutations
-                scanner.MoveOn();
-                Expression second = ReadFactor();
-                return new Power(first, second);
-            }
-            else
-            {
-                return first;
             }
         }
-        public Expression ReadNcr()
-        {
-            Expression first = ReadAtom();
-            if (scanner.Current().ToString() == "C")
-            {  // "P" means combinations
-                scanner.MoveOn();
-                Expression second = ReadFactor();
-                return new Combination(first, second);
-            }
-            else
-            {
-                return first;
-            }
-        }*/
         public Expression ReadAtom()
         {
             if (scanner.Current().GetTokenType() == TokenType.Number)

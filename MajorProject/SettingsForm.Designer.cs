@@ -40,6 +40,7 @@
             this.radioButtonDegrees = new System.Windows.Forms.RadioButton();
             this.radioButtonRadians = new System.Windows.Forms.RadioButton();
             this.checkBoxShowFunctions = new System.Windows.Forms.CheckBox();
+            this.checkBoxPermAndComb = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -121,7 +122,7 @@
             // checkBoxAlwaysOnTop
             // 
             this.checkBoxAlwaysOnTop.AutoSize = true;
-            this.checkBoxAlwaysOnTop.Location = new System.Drawing.Point(12, 58);
+            this.checkBoxAlwaysOnTop.Location = new System.Drawing.Point(12, 104);
             this.checkBoxAlwaysOnTop.Name = "checkBoxAlwaysOnTop";
             this.checkBoxAlwaysOnTop.Size = new System.Drawing.Size(96, 17);
             this.checkBoxAlwaysOnTop.TabIndex = 7;
@@ -174,11 +175,23 @@
             this.checkBoxShowFunctions.Text = "Show Functions";
             this.checkBoxShowFunctions.UseVisualStyleBackColor = true;
             // 
+            // checkBoxPermAndComb
+            // 
+            this.checkBoxPermAndComb.AutoSize = true;
+            this.checkBoxPermAndComb.Location = new System.Drawing.Point(12, 81);
+            this.checkBoxPermAndComb.Name = "checkBoxPermAndComb";
+            this.checkBoxPermAndComb.Size = new System.Drawing.Size(171, 17);
+            this.checkBoxPermAndComb.TabIndex = 12;
+            this.checkBoxPermAndComb.Text = "Permuations and Combinations";
+            this.checkBoxPermAndComb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxPermAndComb.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(281, 216);
+            this.Controls.Add(this.checkBoxPermAndComb);
             this.Controls.Add(this.checkBoxShowFunctions);
             this.Controls.Add(this.radioButtonRadians);
             this.Controls.Add(this.radioButtonDegrees);
@@ -212,5 +225,6 @@
         private System.Windows.Forms.RadioButton radioButtonDegrees;
         private System.Windows.Forms.RadioButton radioButtonRadians;
         private System.Windows.Forms.CheckBox checkBoxShowFunctions;
+        private System.Windows.Forms.CheckBox checkBoxPermAndComb;
     }
 }

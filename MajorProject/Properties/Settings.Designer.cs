@@ -62,7 +62,7 @@ namespace MajorProject.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowFunctions {
+        public bool DisplayFunctions {
             get {
                 return ((bool)(this["ShowFunctions"]));
             }

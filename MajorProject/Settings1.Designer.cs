@@ -22,36 +22,31 @@ namespace MajorProject {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisplayVariables
-        {
-            get
-            {
+        public bool DisplayVariables {
+            get {
                 return ((bool)(this["DisplayVariables"]));
             }
-            set
-            {
+            set {
                 this["DisplayVariables"] = value;
             }
         }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisplayFunctions
-        {
-            get
-            {
+        public bool DisplayFunctions {
+            get {
                 return ((bool)(this["DisplayFunctions"]));
             }
-            set
-            {
+            set {
                 this["DisplayFunctions"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
