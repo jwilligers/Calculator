@@ -1,8 +1,8 @@
 ﻿namespace MajorProject
 {
     public enum TokenType
-    { // there are five types of tokens
-        Variable, Number, Operator, Comment, Finish
+    { // there are six types of tokens
+        Variable, Number, Operator, Comment, Function, Finish
 
     }
     class Token

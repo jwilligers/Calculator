@@ -55,6 +55,17 @@ namespace MajorProject
                 }
                 current = new Token(TokenType.Comment, content);
             }
+            else if (input[position] == '!')
+            {
+                position++;
+                string content = "";
+                while (position != input.Length && input[position] != '\r' && input[position] != '\n')
+                {
+                    content += input[position];
+                    position++;
+                }
+                current = new Token(TokenType.Function, content);
+            }
             else
             {
                 current = new Token(TokenType.Operator, input[position].ToString());

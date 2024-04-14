@@ -1,6 +1,9 @@
+using MajorProject.Polynomial;
 using System;
-
-namespace PolyLib
+using PolyLib;
+using System.Linq;
+using System.Collections.Generic;
+namespace MajorProject.Polynomial
 {
     public class Polynomial
     {
@@ -11,7 +14,11 @@ namespace PolyLib
         /// p(x) = a_0 + a_1*x + a_2*x^2 + ... + a_n*x^n.
         /// </summary>
         public Complex[] Coefficients;
-       
+
+
+        List<Complex> CoefficientsList = new List<Complex>();
+        
+
         #endregion
 
         #region constructors
@@ -20,9 +27,10 @@ namespace PolyLib
         /// Inits zero polynomial p = 0.
         /// </summary>
         public Polynomial()
-        {            
+        {
             Coefficients = new Complex[1];
             Coefficients[0] = Complex.Zero;
+            CoefficientsList.Add(new Complex(0));
         }
 
         /// <summary>
@@ -90,11 +98,69 @@ namespace PolyLib
         /// Inits polynomial from string like "2x^2 + 4x + (2+2i)"
         /// </summary>
         /// <param name="p"></param>
-        public Polynomial(string p)
+        public Polynomial(string PolyExpression)
         {
-            throw new NotImplementedException();
+            this.ReadPolyExpression(PolyExpression);
         }
 
+            /// <summary>
+            /// Read Method will Identify any Term in the Expression and Create a new Instance of 
+            /// Term Class and add it to the TermCollection
+            /// </summary>
+            /// <param name="PolyExpression">input string of Polynomial Expression</param>
+            private void ReadPolyExpression(string PolyExpression)
+            {
+            if (ValidateExpression(PolyExpression))
+            {
+                string NextChar = string.Empty;
+                string NextTerm = string.Empty;
+                for (int i = 0; i < PolyExpression.Length; i++)
+                {
+                    NextChar = PolyExpression.Substring(i, 1);
+                    if ((NextChar == "-" | NextChar == "+") & i > 0)
+                    {
+                        Term TermItem = new Term(NextTerm);
+                        NextTerm = string.Empty;
+                    }
+                    NextTerm += NextChar;
+                }
+                Term Item = new Term(NextTerm);
+                CoefficientsList.Add(new Complex(NextTerm.ToString()));
+            }
+            else
+            {
+                throw new Exception("Invalid Polynomial Expression");
+            }
+        }
+
+        /// <summary>
+        /// Static method which Validate the input Expression
+        /// </summary>
+        /// <param name="Expression"></param>
+        /// <returns></returns>
+        public static bool ValidateExpression(string Expression)
+        {
+            if (Expression.Length == 0)
+                return false;
+
+            Expression = Expression.Trim();
+            Expression = Expression.Replace(" ", "");
+            while (Expression.IndexOf("--") > -1 | Expression.IndexOf("++") > -1 | Expression.IndexOf("^^") > -1 | Expression.IndexOf("xx") > -1)
+            {
+                Expression = Expression.Replace("--", "-");
+                Expression = Expression.Replace("++", "+");
+                Expression = Expression.Replace("^^", "^");
+                Expression = Expression.Replace("xx", "x");
+            }
+            string ValidChars = "+-x1234567890^";
+            bool result = true;
+            foreach (char c in Expression)
+            {
+                if (ValidChars.IndexOf(c) == -1)
+                    result = false;
+            }
+            return result;
+        }
         #endregion
 
         #region dynamics
@@ -853,5 +919,11 @@ namespace PolyLib
         }
 
         #endregion
+
+        private void addToFunctionTable(FunctionTable functionTable)
+        {
+            functionTable.Add("test", this);
+        }
     }
+
 }

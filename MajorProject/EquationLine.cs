@@ -5,7 +5,7 @@ namespace MajorProject
 {
     class EquationLine : Line
     {
-        VariableTable table; 
+        VariableTable table;
         Expression left, right;
 
         public EquationLine(VariableTable _table, Expression _left, Expression _right)

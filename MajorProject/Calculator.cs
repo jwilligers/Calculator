@@ -102,6 +102,10 @@ namespace MajorProject
                     {
                         output += currentLine.ToString();
                     }
+                    else if (currentLine is PolynomialLine)
+                    {
+                        output += currentLine.ToString();
+                    }
                     else
                     {
                         output += "\r\n";

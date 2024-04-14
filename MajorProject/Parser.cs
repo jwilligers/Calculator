@@ -12,7 +12,6 @@ namespace MajorProject
         {
             scanner = _scanner;
             table = new VariableTable();
-            
         }
 
         public Worksheet ReadWorksheet()
@@ -24,6 +23,7 @@ namespace MajorProject
             }
             return new Worksheet(lines.ToArray()); 
         }
+
         public Line ReadLine()
         {
             if (scanner.Current().GetTokenType() == TokenType.Comment)
@@ -36,6 +36,12 @@ namespace MajorProject
             {
                 scanner.MoveOn(); // move to next token
                 return new EmptyLine(); // detect empty lines
+            }
+            else if (scanner.Current().GetTokenType() == TokenType.Function)
+            {
+                String content = scanner.Current().ToString();
+                scanner.MoveOn(); // move to next token
+                return new PolynomialLine(content);
             }
             else
             {
