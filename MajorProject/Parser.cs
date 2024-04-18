@@ -8,10 +8,12 @@ namespace MajorProject
     {
         Scanner scanner;
         VariableTable table;
+        FunctionTable functionTable;
         public Parser(Scanner _scanner)
         {
             scanner = _scanner;
             table = new VariableTable();
+            functionTable = new FunctionTable();
         }
 
         public Worksheet ReadWorksheet()
@@ -40,8 +42,20 @@ namespace MajorProject
             else if (scanner.Current().GetTokenType() == TokenType.Function)
             {
                 String content = scanner.Current().ToString();
+                Console.WriteLine(content.Split('=')[0]);
+                String LHS = content.Split('=')[0].Replace(" ", "");
+                String functionName = LHS.Split('(')[0];
+                Console.WriteLine("Content: " + content);
+                Console.WriteLine(LHS.IndexOf('('));
+                Console.WriteLine(LHS.IndexOf(')'));
+
+                String argument = LHS.Substring(LHS.IndexOf('(')+1, LHS.IndexOf(')')- LHS.IndexOf('(')-1);
+
+                String functionExpression = content.Split('=')[1].Replace(" ", "");
+                Console.WriteLine("Argument: " + argument);
+                Console.WriteLine("Expression: " + functionExpression);
                 scanner.MoveOn(); // move to next token
-                return new PolynomialLine(content);
+                return new FunctionLine(functionTable, functionName, argument, functionExpression);
             }
             else
             {
@@ -130,10 +144,10 @@ namespace MajorProject
             } //same as 0-factor
             else
             {
-                return ReadPower();
+                return ReadCustomOperation();
             }
         }
-        public Expression ReadPower()
+        public Expression ReadCustomOperation()
         {
             Expression first = ReadAtom();
             if (scanner.Current().ToString() == "^")
@@ -183,6 +197,9 @@ namespace MajorProject
             {
                 string name = scanner.Current().ToString();
                 scanner.MoveOn();
+                string[] variableList = { "e", "i", "pi" };
+                string[] functionsList = { "sin", "cos"};
+
                 switch (name.ToLower()) // special words that cannot be variables
                 {
                     case "e": // constant e

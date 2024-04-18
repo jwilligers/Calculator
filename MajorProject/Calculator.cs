@@ -207,7 +207,7 @@ namespace MajorProject
         }
         private void Resizing()
         {
-            if (settings.DisplayVariables)
+            if (settings.DisplayVariables || settings.DisplayFunctions)
             {
                 listBox1.Visible = true;
                 if (mode == "h")

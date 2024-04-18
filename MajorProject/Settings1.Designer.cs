@@ -37,18 +37,6 @@ namespace MajorProject {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisplayFunctions {
-            get {
-                return ((bool)(this["DisplayFunctions"]));
-            }
-            set {
-                this["DisplayFunctions"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Horizontal {
             get {
@@ -127,6 +115,18 @@ namespace MajorProject {
             }
             set {
                 this["Radians"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisplayFunctions {
+            get {
+                return ((bool)(this["DisplayFunctions"]));
+            }
+            set {
+                this["DisplayFunctions"] = value;
             }
         }
     }

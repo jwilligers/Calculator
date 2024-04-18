@@ -2,12 +2,9 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MajorProject" GeneratedClassName="Settings1">
   <Profiles />
   <Settings>
-	  <Setting Name="DisplayVariables" Type="System.Boolean" Scope="User">
-		  <Value Profile="(Default)">False</Value>
-	  </Setting>
-	  <Setting Name="DisplayFunctions" Type="System.Boolean" Scope="User">
-		  <Value Profile="(Default)">False</Value>
-	  </Setting>
+    <Setting Name="DisplayVariables" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="Horizontal" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -27,6 +24,9 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Radians" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DisplayFunctions" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

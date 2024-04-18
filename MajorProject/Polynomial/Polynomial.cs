@@ -119,12 +119,10 @@ namespace MajorProject.Polynomial
                     NextChar = PolyExpression.Substring(i, 1);
                     if ((NextChar == "-" | NextChar == "+") & i > 0)
                     {
-                        Term TermItem = new Term(NextTerm);
                         NextTerm = string.Empty;
                     }
                     NextTerm += NextChar;
                 }
-                Term Item = new Term(NextTerm);
                 CoefficientsList.Add(new Complex(NextTerm.ToString()));
             }
             else
@@ -922,7 +920,7 @@ namespace MajorProject.Polynomial
 
         private void addToFunctionTable(FunctionTable functionTable)
         {
-            functionTable.Add("test", this);
+            //functionTable.Add("test", this);
         }
     }
 

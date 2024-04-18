@@ -102,12 +102,11 @@
     <Compile Include="Expression.cs" />
     <Compile Include="ExpressionLine.cs" />
     <Compile Include="Multiplication.cs" />
+    <Compile Include="FunctionLine.cs" />
     <Compile Include="Polynomial\Polynomial.cs" />
     <Compile Include="PolynomialLine.cs" />
     <Compile Include="Combination.cs" />
-    <None Include="Polynomial\Poly.cs1" />
-    <Compile Include="Polynomial\Term.cs" />
-    <Compile Include="Polynomial\TermCollection.cs" />
+    <Compile Include="Settings1.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>

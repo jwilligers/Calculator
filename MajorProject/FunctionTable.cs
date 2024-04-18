@@ -1,25 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PolyLib;
-using MajorProject.Polynomial;
 
 namespace MajorProject
 {
-    class FunctionTable:Dictionary<string,Polynomial.Polynomial>
+
+    // string
+    class FunctionTable:Dictionary<string,string>
     {
         public FunctionTable()
         {
         }
-        public bool hasValue(string name)
+        public bool exists(string name)
         {
             return ContainsKey(name);
         }
-        public Polynomial.Polynomial lookUpValue(string name)
+        public string lookUpEquation(string name)
         {
             return this[name];
         }
-        public void setValue(string name, Polynomial.Polynomial value)
+        public void setValue(string name, string equation)
         {
-            this[name] = value;
+            this[name] = equation;
+        }
+        public void addBuiltinFunctions(string typeName)
+        {
+            this.Add("sin", "sin(val1)");
+            this.Add("cos", "cos(val1)");
+            this.Add("tan", "tan(val1)");
         }
 
     }
