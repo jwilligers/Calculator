@@ -103,8 +103,8 @@
     <Compile Include="ExpressionLine.cs" />
     <Compile Include="Multiplication.cs" />
     <Compile Include="FunctionLine.cs" />
-    <Compile Include="Polynomial\Polynomial.cs" />
-    <Compile Include="PolynomialLine.cs" />
+    <None Include="Polynomial\Polynomial.cs1" />
+    <None Include="PolynomialLine.cs1" />
     <Compile Include="Combination.cs" />
     <Compile Include="Settings1.cs" />
     <Compile Include="SettingsForm.cs">

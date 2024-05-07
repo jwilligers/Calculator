@@ -9,19 +9,51 @@ namespace MajorProject
         String functionExpression;
         FunctionTable table;
 
-
         public FunctionLine(FunctionTable _table, String _functionName, String _argument, String _functionExpression)
         {
             this.table = _table;
             this.functionName = _functionName;
             this.argument = _argument;
             this.functionExpression = _functionExpression;
-            table.setValue(functionName, functionExpression);
+            this.table.setValue(functionName+"(x)", functionExpression.Replace(argument, "x"));
         }
         override public string ToString()
         {
-            return functionName + " takes argument " + argument + "and has expression " + functionExpression;
+            return functionName + " takes argument " + argument + " and has expression " + functionExpression;
+        }
+        public void createTree()
+        {
+            Scanner scanner = new Scanner(functionExpression + "\n\n", table);
+            Parser parser = new Parser(scanner, table);
+            Worksheet worksheet = parser.ReadWorksheet();
+
+            String[] solutions = new String[worksheet.NumLines()];
+
+            bool progress;
+            do
+            {
+                progress = false;
+                for (int index = 0; index < worksheet.NumLines(); index++)
+                {
+                    Line currentLine = worksheet.GetLine(index);
+                    if (currentLine is EquationLine)
+                    {
+                        EquationLine equation = (EquationLine)currentLine;
+                        try
+                        {
+                            String solution = equation.Solve();
+                            solutions[index] = solution;
+                            progress = true;
+                        }
+                        catch (SolvedException)
+                        {
+                        }
+                        catch (UnknownVariableException)
+                        {
+                        }
+                    }
+                }
+            } while (progress);
         }
     }
-
 }

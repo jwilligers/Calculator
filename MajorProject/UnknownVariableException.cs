@@ -6,6 +6,7 @@ namespace MajorProject
     {
         public UnknownVariableException(string message) : base(message)
         {
+            Console.WriteLine(message);
         }
 
     }

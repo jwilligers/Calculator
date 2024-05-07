@@ -3,11 +3,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Linq;
 namespace MajorProject
 {
     public partial class Calculator : Form
     {
-        Settings1 settings = new Settings1();       
+        Settings1 settings = new Settings1();
+        FunctionTable functionTable = new FunctionTable();
         string mode = "h";
         public Calculator()
         {
@@ -48,8 +50,8 @@ namespace MajorProject
             try
             {
                 string input = InputBox.Text;
-                Scanner scanner = new Scanner(input + "\n\n");
-                Parser parser = new Parser(scanner);
+                Scanner scanner = new Scanner(input + "\n\n", functionTable);
+                Parser parser = new Parser(scanner, functionTable);
                 Worksheet worksheet = parser.ReadWorksheet();
 
                 String[] solutions = new String[worksheet.NumLines()];
@@ -102,7 +104,7 @@ namespace MajorProject
                     {
                         output += currentLine.ToString();
                     }
-                    else if (currentLine is PolynomialLine)
+                    else if (currentLine is FunctionLine)
                     {
                         output += currentLine.ToString();
                     }
@@ -119,10 +121,9 @@ namespace MajorProject
                 if (settings.DisplayFunctions)
                 {
                     listBox1.Items.Add("");
-                    listBox1.Items.AddRange(functions);
+                    listBox1.Items.AddRange(parser.returnFunctions());
                 }
                 listBox1.Sorted = false;
-
             }
             catch (InputException)
             {
@@ -130,7 +131,8 @@ namespace MajorProject
             }
             catch (Exception error)
             {
-                OutputBox.Text = error.Message;
+                
+                OutputBox.Text = error.Source + " " + error.Message;
             }
 
         }

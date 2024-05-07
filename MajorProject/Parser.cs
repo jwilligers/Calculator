@@ -9,11 +9,11 @@ namespace MajorProject
         Scanner scanner;
         VariableTable table;
         FunctionTable functionTable;
-        public Parser(Scanner _scanner)
+        public Parser(Scanner _scanner, FunctionTable _functionTable)
         {
             scanner = _scanner;
+            functionTable = _functionTable;
             table = new VariableTable();
-            functionTable = new FunctionTable();
         }
 
         public Worksheet ReadWorksheet()
@@ -39,26 +39,20 @@ namespace MajorProject
                 scanner.MoveOn(); // move to next token
                 return new EmptyLine(); // detect empty lines
             }
-            else if (scanner.Current().GetTokenType() == TokenType.Function)
+            else if (scanner.Current().GetTokenType() == TokenType.FunctionDefinition)
             {
                 String content = scanner.Current().ToString();
-                Console.WriteLine(content.Split('=')[0]);
                 String LHS = content.Split('=')[0].Replace(" ", "");
                 String functionName = LHS.Split('(')[0];
-                Console.WriteLine("Content: " + content);
-                Console.WriteLine(LHS.IndexOf('('));
-                Console.WriteLine(LHS.IndexOf(')'));
-
                 String argument = LHS.Substring(LHS.IndexOf('(')+1, LHS.IndexOf(')')- LHS.IndexOf('(')-1);
 
                 String functionExpression = content.Split('=')[1].Replace(" ", "");
-                Console.WriteLine("Argument: " + argument);
-                Console.WriteLine("Expression: " + functionExpression);
                 scanner.MoveOn(); // move to next token
                 return new FunctionLine(functionTable, functionName, argument, functionExpression);
             }
             else
             {
+                
                 Expression first = ReadExpression(); 
                 if (scanner.Current().ToString() == "=")
                 {
@@ -199,6 +193,11 @@ namespace MajorProject
                 scanner.MoveOn();
                 string[] variableList = { "e", "i", "pi" };
                 string[] functionsList = { "sin", "cos"};
+                if (functionTable.ContainsKey(name+"(x)"))
+                {
+                    Console.WriteLine("Key: " + name + " found.");
+                    return new CustomFunction(name, functionTable.lookUpEquation(name), ReadAtom());
+                }
 
                 switch (name.ToLower()) // special words that cannot be variables
                 {
@@ -264,7 +263,6 @@ namespace MajorProject
                         return new Round(ReadAtom());
                     case "inv": // Inverse
                         return new Inv(ReadAtom());
-                    
                     default:
                         return new Variable(table, name);
                    }      
@@ -294,6 +292,16 @@ namespace MajorProject
                 variables.Add(pair.Key + " = " + pair.Value.ToString());
             }
             return variables.ToArray().Length;
+        }
+        public string[] returnFunctions()
+        {
+            List<string> functions = new List<string>();
+            //System.Windows.Forms.MessageBox.Show("Count = "+table.Count.ToString());
+            foreach (KeyValuePair<string, string> pair in functionTable)
+            {
+                functions.Add(pair.Key + " = " + pair.Value);
+            }
+            return functions.ToArray();
         }
         public string[] returnValues()
         {

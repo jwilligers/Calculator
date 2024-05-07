@@ -8,12 +8,14 @@ namespace MajorProject
         int position;
         Token current;
 
-        public Scanner(String _input)
+        public Scanner(String _input, FunctionTable functionTable)
         { // remove whitespace
-            input = _input.Replace("\t", "").Replace("\r", ""); 
+            input = _input.Replace("\t", "").Replace("\r", "");
+            //input = functionTable.replaceAllFunctions(input);
             position = 0;
             MoveOn();
         }
+
         public void MoveOn() // get next token
         {
             while (position < input.Length && input[position] == ' ')
@@ -64,7 +66,7 @@ namespace MajorProject
                     content += input[position];
                     position++;
                 }
-                current = new Token(TokenType.Function, content);
+                current = new Token(TokenType.FunctionDefinition, content);
             }
             else
             {

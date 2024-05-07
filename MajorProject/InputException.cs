@@ -7,6 +7,7 @@ namespace MajorProject
         public InputException(string message)
             : base(message)
         {
+            Console.WriteLine(message);
         }
     }
 }

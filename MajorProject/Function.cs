@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using PolyLib;
 
 namespace MajorProject
@@ -479,6 +480,28 @@ namespace MajorProject
         override public string ToString()
         {
             return "sqrt(" + expr.ToString() + ")";
+        }
+    }
+    class CustomFunction : Function
+    {
+        new readonly Expression expr;
+        string equation;
+        public CustomFunction(string functionName, string _equation, Expression _expr)
+            : base(_expr)
+        {
+            expr = _expr;
+            equation = _equation;
+        }
+
+        public override Complex Value()
+        {
+            return new Complex(0);
+            //ExpressionLine line = new ExpressionLine(equation.Replace("x", expr.ToString()));
+            //return line.Result().Value();
+        }
+        override public string ToString()
+        {
+            return "functionName(" + expr.ToString() + ")";
         }
     }
     class Square : Function
