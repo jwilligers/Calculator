@@ -485,8 +485,8 @@ namespace MajorProject
     class CustomFunction : Function
     {
         new readonly Expression expr;
-        string equation;
-        public CustomFunction(string functionName, string _equation, Expression _expr)
+        Expression equation;
+        public CustomFunction(string functionName, Expression _equation, Expression _expr)
             : base(_expr)
         {
             expr = _expr;
@@ -495,7 +495,7 @@ namespace MajorProject
 
         public override Complex Value()
         {
-            return new Complex(0);
+            return equation.Value();
             //ExpressionLine line = new ExpressionLine(equation.Replace("x", expr.ToString()));
             //return line.Result().Value();
         }

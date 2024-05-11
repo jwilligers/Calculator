@@ -6,7 +6,7 @@ using System.IO;
 
 namespace MajorProject
 {
-    class FunctionTable:Dictionary<string,string>
+    class FunctionTable:Dictionary<string,Expression>
     {
         public FunctionTable()
         {
@@ -16,11 +16,11 @@ namespace MajorProject
         {
             return ContainsKey(name);
         }
-        public string lookUpEquation(string name)
+        public Expression lookUpEquation(string name)
         {
             return this[name+"(x)"];
         }
-        public void setValue(string name, string equation)
+        public void setValue(string name, Expression equation)
         {
             this[name] = equation;
         }
@@ -57,7 +57,7 @@ namespace MajorProject
             if (line.Length>0 && line.Trim()[0] == '!') { 
                 return line;
             }
-            foreach (KeyValuePair<string, string> entry in this)
+            foreach (KeyValuePair<string, Expression> entry in this)
             {
                 line = swapString(line, entry.Key);
             }
@@ -65,7 +65,7 @@ namespace MajorProject
         }
         public string swapString(string line, string function)
         {
-            string swappedString = line.Replace(function, lookUpEquation(function).Replace("x", getArgument(line, function)));
+            string swappedString = line.Replace(function, lookUpEquation(function).ToString().Replace("x", getArgument(line, function)));
             if (line != swappedString)
             {
                 Console.WriteLine(line + " " + swappedString);

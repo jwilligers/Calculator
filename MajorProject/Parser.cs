@@ -9,7 +9,7 @@ namespace MajorProject
         Scanner scanner;
         VariableTable table;
         FunctionTable functionTable;
-        public Parser(Scanner _scanner, FunctionTable _functionTable)
+        public Parser(Scanner _scanner, FunctionTable _functionTable, Boolean insideFunction = false, string argumentName = "")
         {
             scanner = _scanner;
             functionTable = _functionTable;
@@ -297,7 +297,7 @@ namespace MajorProject
         {
             List<string> functions = new List<string>();
             //System.Windows.Forms.MessageBox.Show("Count = "+table.Count.ToString());
-            foreach (KeyValuePair<string, string> pair in functionTable)
+            foreach (KeyValuePair<string, Expression> pair in functionTable)
             {
                 functions.Add(pair.Key + " = " + pair.Value);
             }

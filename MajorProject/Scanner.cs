@@ -7,10 +7,14 @@ namespace MajorProject
         String input;
         int position;
         Token current;
+        string argumentName;
+        Boolean insideFunction;
 
-        public Scanner(String _input, FunctionTable functionTable)
+        public Scanner(String _input, FunctionTable functionTable, Boolean _insideFunction = false, string _argumentName = "")
         { // remove whitespace
             input = _input.Replace("\t", "").Replace("\r", "");
+            insideFunction = _insideFunction;
+            argumentName = _argumentName;
             //input = functionTable.replaceAllFunctions(input);
             position = 0;
             MoveOn();
@@ -34,7 +38,14 @@ namespace MajorProject
                     var += input[position]; // single letter variable names are allowed
                     position++;
                 }
-                current = new Token(TokenType.Variable, var);
+                if (var == argumentName && insideFunction)
+                {
+                    current = new Token(TokenType.FunctionArgument, var);
+                }   
+                else
+                {
+                    current = new Token(TokenType.Variable, var);
+                }
             }
             else if (Char.IsDigit(input[position]))
             {

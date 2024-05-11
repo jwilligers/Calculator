@@ -15,16 +15,16 @@ namespace MajorProject
             this.functionName = _functionName;
             this.argument = _argument;
             this.functionExpression = _functionExpression;
-            this.table.setValue(functionName+"(x)", functionExpression.Replace(argument, "x"));
+            this.table.setValue(functionName+"(x)", createTree());
         }
         override public string ToString()
         {
             return functionName + " takes argument " + argument + " and has expression " + functionExpression;
         }
-        public void createTree()
+        public Expression createTree()
         {
             Scanner scanner = new Scanner(functionExpression + "\n\n", table);
-            Parser parser = new Parser(scanner, table);
+            Parser parser = new Parser(scanner, table, true, "x");
             Worksheet worksheet = parser.ReadWorksheet();
 
             String[] solutions = new String[worksheet.NumLines()];
@@ -54,6 +54,7 @@ namespace MajorProject
                     }
                 }
             } while (progress);
+            return null;
         }
     }
 }
