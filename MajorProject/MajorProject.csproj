@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+	<LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\Users\Joshua\Desktop\</PublishUrl>
@@ -106,6 +108,7 @@
     <None Include="Polynomial\Polynomial.cs1" />
     <None Include="PolynomialLine.cs1" />
     <Compile Include="Combination.cs" />
+    <Compile Include="Quantity.cs" />
     <Compile Include="Settings1.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
@@ -136,6 +139,8 @@
     </Compile>
     <Compile Include="SolvedException.cs" />
     <Compile Include="Subtraction.cs" />
+    <Compile Include="UnaryFunction.cs" />
+    <Compile Include="Unit.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="UnknownVariableException.cs" />
     <Compile Include="Variable.cs" />

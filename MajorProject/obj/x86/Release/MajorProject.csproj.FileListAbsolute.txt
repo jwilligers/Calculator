@@ -15,3 +15,20 @@ C:\Users\Joshua\Dropbox\Programming\Visual Studio 2010\Projects\MajorProject\Maj
 C:\Users\Joshua\Dropbox\Programming\Visual Studio 2010\Projects\MajorProject\MajorProject\obj\x86\Release\MajorProject.FormSplash.resources
 C:\Users\Joshua\Dropbox\Programming\Visual Studio 2010\Projects\MajorProject\MajorProject\bin\Release\MajorProject.exe.config
 C:\Users\Joshua\Dropbox\Programming\Visual Studio 2010\Projects\MajorProject\MajorProject\obj\x86\Release\MajorProject.SettingsForm.resources
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\bin\Release\MajorProject.exe.config
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\bin\Release\MajorProject.exe.manifest
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\bin\Release\MajorProject.application
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\bin\Release\MajorProject.exe
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\bin\Release\MajorProject.pdb
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.csproj.AssemblyReference.cache
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.AboutBox1.resources
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.Calculator.resources
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.SettingsForm.resources
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.FormSplash.resources
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.Properties.Resources.resources
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.csproj.GenerateResource.cache
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.csproj.CoreCompileInputs.cache
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.exe.manifest
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.application
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.exe
+C:\Users\jwill\OneDrive\Documents\GitHub\Calculator\MajorProject\obj\x86\Release\MajorProject.pdb

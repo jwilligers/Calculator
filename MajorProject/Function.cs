@@ -1,6 +1,8 @@
-﻿using System;
+﻿using PolyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices.WindowsRuntime;
-using PolyLib;
 
 namespace MajorProject
 {
@@ -28,6 +30,33 @@ namespace MajorProject
         public Expression Argument()
         {
             return expr;
+        }
+
+        public static class FunctionMetadata
+        {
+            private static readonly Dictionary<UnaryFunctionType, UnaryFunctionType> _inverse =
+                new()
+                {
+            { UnaryFunctionType.Sin,   UnaryFunctionType.Asin },
+            { UnaryFunctionType.Cos,   UnaryFunctionType.Acos },
+            { UnaryFunctionType.Tan,   UnaryFunctionType.Atan },
+            { UnaryFunctionType.Asin,  UnaryFunctionType.Sin },
+            { UnaryFunctionType.Acos,  UnaryFunctionType.Cos },
+            { UnaryFunctionType.Atan,  UnaryFunctionType.Tan },
+            { UnaryFunctionType.Exp,   UnaryFunctionType.Ln },
+            { UnaryFunctionType.Ln,    UnaryFunctionType.Exp },
+            { UnaryFunctionType.Sqrt,  UnaryFunctionType.Square },
+            { UnaryFunctionType.Square,UnaryFunctionType.Sqrt },
+                    // etc.
+                };
+
+            public static UnaryFunction Inverse(UnaryFunction f, Expression rhs)
+            {
+                if (!_inverse.TryGetValue(f.Type, out var invType))
+                    throw new InvalidOperationException($"No inverse defined for {f.Type}");
+
+                return new UnaryFunction(invType, rhs);
+            }
         }
         public Function Inverse(Expression RHS)
         {
@@ -417,7 +446,7 @@ namespace MajorProject
         }
         override public string ToString()
         {
-            return "ln(" + expr.ToString() + ")";
+            return "log(" + expr.ToString() + ")";
         }
 
     }
@@ -430,19 +459,19 @@ namespace MajorProject
 
         public override Complex Value()
         {
-            return new Complex(fact(int.Parse(expr.Value().ToString())));
-        }
-        public int fact(int x)
-        {
-            int fact = 1;
-            int i = 1;
-            while (i <= x)
-            {
-                fact = fact * i;
-                i++;
+            if (expr.Value().Im != 0)
+                throw new ArgumentException("Factorial is only defined here for real integers.");
 
-            }
-            return fact;
+            var nDouble = expr.Value().Re;
+            if (nDouble < 0 || nDouble % 1 != 0)
+                throw new ArgumentException("Factorial requires a non-negative integer.");
+
+            int n = (int)nDouble;
+            long result = 1;
+            for (int i = 2; i <= n; i++)
+                result *= i;
+
+            return new Complex(result);
         }
 
         override public string ToString()
@@ -485,12 +514,14 @@ namespace MajorProject
     class CustomFunction : Function
     {
         new readonly Expression expr;
+        String functionName;
         Expression equation;
-        public CustomFunction(string functionName, Expression _equation, Expression _expr)
+        public CustomFunction(string _functionName, Expression _equation, Expression _expr)
             : base(_expr)
         {
             expr = _expr;
             equation = _equation;
+            functionName = _functionName;
         }
 
         public override Complex Value()
@@ -501,7 +532,7 @@ namespace MajorProject
         }
         override public string ToString()
         {
-            return "functionName(" + expr.ToString() + ")";
+            return functionName + "(" + expr.ToString() + ")";
         }
     }
     class Square : Function

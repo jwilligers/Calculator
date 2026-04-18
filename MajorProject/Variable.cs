@@ -6,11 +6,18 @@ namespace MajorProject
     {
         VariableTable table;
         string name;
-       
+        Unit unit;
         public Variable(VariableTable _table, string _name)
         {
-            table = _table;
-            name = _name;
+            this.table = _table;
+            this.name = _name;
+            this.unit = new Unit(UnitType.None);
+        }
+        public Variable(VariableTable _table, string _name, Unit unit)
+        {
+            this.table = _table;
+            this.name = _name;
+            this.unit = unit;
         }
 
         public bool IsSet()
