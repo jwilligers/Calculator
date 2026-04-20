@@ -21,7 +21,7 @@ namespace MajorProject
         {
             return functionName + " takes argument " + argument + " and has expression " + functionExpression;
         }
-        public Expression createTree()
+        public FunctionDefinition createTree()
         {
             Scanner scanner = new Scanner(functionExpression + "\n\n", table);
             Parser parser = new Parser(scanner, table, true, "x");

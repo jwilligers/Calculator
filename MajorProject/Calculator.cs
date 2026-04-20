@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PolyLib;
+using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 namespace MajorProject
 {
     public partial class Calculator : Form
@@ -46,7 +47,6 @@ namespace MajorProject
         }
         private void InputBox_TextChanged(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
             try
             {
                 string input = InputBox.Text;
@@ -55,7 +55,6 @@ namespace MajorProject
                 Worksheet worksheet = parser.ReadWorksheet();
 
                 String[] solutions = new String[worksheet.NumLines()];
-
                 bool progress;
                 do
                 {
@@ -116,12 +115,19 @@ namespace MajorProject
                 OutputBox.Text = output;
                 string[] variables = parser.returnValues();
                 Array.Sort(variables);
-                string[] functions = { "sin", "cos", "tan", "conj", "re", "im", "fact", "asin", "acos", "atan", "exp", "ln" };
-                listBox1.Items.AddRange(variables);
+                
+                listBox1.Items.Clear();
+                listBox1.Items.AddRange(parser.returnValues());
+
+
                 if (settings.DisplayFunctions)
                 {
                     listBox1.Items.Add("");
-                    listBox1.Items.AddRange(parser.returnFunctions());
+
+                    foreach (string line in parser.returnFunctions())
+                        listBox1.Items.Add(line);
+
+
                 }
                 listBox1.Sorted = false;
             }
@@ -380,6 +386,21 @@ namespace MajorProject
                 } 
               }
         }
-        
+
+		private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			if (e.Index < 0)
+				return;
+
+			e.DrawBackground();
+
+			string text = listBox1.Items[e.Index].ToString();
+
+			using (Brush b = new SolidBrush(Color.White))
+				e.Graphics.DrawString(text, e.Font, b, e.Bounds);
+
+			e.DrawFocusRectangle();
+		}
+
     }
 }

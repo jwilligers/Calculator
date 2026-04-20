@@ -15,7 +15,7 @@ namespace MajorProject
         Sinh, Cosh, Tanh,
         Sech, Csch, Coth,
         Exp, Ln, Log10,
-        Sqrt, Square,
+        Sqrt, Square, Cube, Cbrt,
         Abs, Arg, Re, Im,
         Conj, Inv,
         Floor, Ceil, Round,
@@ -23,55 +23,97 @@ namespace MajorProject
         Custom
     }
 
-    public class UnaryFunction
+    public class UnaryFunction : Function
     {
         public UnaryFunctionType Type { get; }
-        public Expression Argument { get; }
-        public Func<Complex, Complex>? CustomImpl { get; }
 
-        public UnaryFunction(UnaryFunctionType type, Expression argument, Func<Complex, Complex>? customImpl = null)
+        public UnaryFunction(UnaryFunctionType type, Expression expr) : base(expr)
         {
             Type = type;
-            Argument = argument;
-            CustomImpl = customImpl;
         }
 
-        public Complex Value()
+        public override Complex Value()
         {
-            var z = Argument.Value();
+            var v = expr.Value();
+
             return Type switch
             {
-                UnaryFunctionType.Sin => Complex.Sin(z),
-                UnaryFunctionType.Cos => Complex.Cos(z),
-                UnaryFunctionType.Tan => Complex.Tan(z),
-                UnaryFunctionType.Asin => Complex.ASin(z),
-                UnaryFunctionType.Acos => Complex.ACos(z),
-                UnaryFunctionType.Atan => Complex.ATan(z),
-                UnaryFunctionType.Sinh => Complex.Sinh(z),
-                UnaryFunctionType.Cosh => Complex.Cosh(z),
-                UnaryFunctionType.Tanh => Complex.Tanh(z),
-                UnaryFunctionType.Sech => Complex.Sech(z),
-                UnaryFunctionType.Csch => Complex.Csch(z),
-                UnaryFunctionType.Coth => Complex.Coth(z),
-                UnaryFunctionType.Exp => Complex.Exp(z),
-                UnaryFunctionType.Ln => Complex.Log(z),
-                UnaryFunctionType.Log10 => Complex.Log(z) / Complex.Log(new Complex(10)),
-                UnaryFunctionType.Sqrt => Complex.Sqrt(z),
-                UnaryFunctionType.Square => Complex.Pow(z, 2),
-                UnaryFunctionType.Abs => new Complex(Complex.Abs(z)),
-                UnaryFunctionType.Arg => new Complex(Complex.Arg(z)),
-                UnaryFunctionType.Re => new Complex(z.Re),
-                UnaryFunctionType.Im => new Complex(z.Im),
-                UnaryFunctionType.Conj => Complex.Conj(z),
-                UnaryFunctionType.Inv => Complex.Inv(z),
-                UnaryFunctionType.Floor => Complex.Floor(z),
-                UnaryFunctionType.Ceil => Complex.Ceil(z),
-                UnaryFunctionType.Round => Complex.Round(z),
-                UnaryFunctionType.Custom when CustomImpl != null => CustomImpl(z),
-                _ => throw new NotSupportedException($"Unsupported function type {Type}")
+                UnaryFunctionType.Sin => Complex.Sin(v),
+                UnaryFunctionType.Cos => Complex.Cos(v),
+                UnaryFunctionType.Tan => Complex.Tan(v),
+
+                UnaryFunctionType.Asin => Complex.ASin(v),
+                UnaryFunctionType.Acos => Complex.ACos(v),
+                UnaryFunctionType.Atan => Complex.ATan(v),
+
+                UnaryFunctionType.Exp => Complex.Exp(v),
+                UnaryFunctionType.Ln => Complex.Ln(v),
+
+                UnaryFunctionType.Sqrt => Complex.Sqrt(v),
+                UnaryFunctionType.Square => v * v,
+
+                UnaryFunctionType.Cbrt => Complex.Pow(v, 1.0 / 3.0),
+                UnaryFunctionType.Cube => v * v * v,
+
+                UnaryFunctionType.Abs => new Complex(Complex.Abs(v)),
+                UnaryFunctionType.Conj => Complex.Conj(v),
+
+                UnaryFunctionType.Re => new Complex(v.Re),
+                UnaryFunctionType.Im => new Complex(v.Im),
+                UnaryFunctionType.Arg => new Complex(Complex.Arg(v)),
+
+                UnaryFunctionType.Floor => Complex.Floor(v),
+                UnaryFunctionType.Ceil => Complex.Ceil(v),
+                UnaryFunctionType.Round => Complex.Round(v),
+
+                UnaryFunctionType.Inv => Complex.Inv(v),
+
+                _ => throw new Exception("Unknown unary function")
             };
         }
 
+        public override string ToString()
+        {
+            return $"{Type.ToString().ToLower()}({expr})";
+        }
+        public override Function Inverse(Expression rhs)
+        {
+            if (rhs is UnaryFunction uf)
+                return UnaryFunctionMetadata.Inverse(uf, rhs);
+
+            throw new Exception("Inverse not supported for this function type");
+        }
+    }
+    static class UnaryFunctionMetadata
+    {
+        private static readonly Dictionary<UnaryFunctionType, UnaryFunctionType> _inverse =
+            new()
+            {
+            { UnaryFunctionType.Sin,   UnaryFunctionType.Asin },
+            { UnaryFunctionType.Cos,   UnaryFunctionType.Acos },
+            { UnaryFunctionType.Tan,   UnaryFunctionType.Atan },
+
+            { UnaryFunctionType.Asin,  UnaryFunctionType.Sin },
+            { UnaryFunctionType.Acos,  UnaryFunctionType.Cos },
+            { UnaryFunctionType.Atan,  UnaryFunctionType.Tan },
+
+            { UnaryFunctionType.Exp,   UnaryFunctionType.Ln },
+            { UnaryFunctionType.Ln,    UnaryFunctionType.Exp },
+
+            { UnaryFunctionType.Sqrt,  UnaryFunctionType.Square },
+            { UnaryFunctionType.Square,UnaryFunctionType.Sqrt },
+
+            { UnaryFunctionType.Cube,  UnaryFunctionType.Cbrt },
+            { UnaryFunctionType.Cbrt,  UnaryFunctionType.Cube }
+            };
+
+        public static UnaryFunction Inverse(UnaryFunction f, Expression rhs)
+        {
+            if (!_inverse.TryGetValue(f.Type, out var inv))
+                throw new InvalidOperationException($"No inverse defined for {f.Type}");
+
+            return new UnaryFunction(inv, rhs);
+        }
     }
 
 }

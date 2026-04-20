@@ -33,5 +33,15 @@ namespace MajorProject
         {
             return "(" + left.ToString() + "C" + right.ToString() + ")";
         }
+
+        public override EquationLine IsolateLeft(VariableTable table, Expression rhs)
+        {
+            return null;
+        }
+
+        public override EquationLine IsolateRight(VariableTable table, Expression rhs)
+        {
+            return null;
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace MajorProject
                 {
                     throw new SolvedException();
                 }
-                if (left is Variable)
+                if (left is Variable v)
                 {
                     if (((Variable)left).IsSet())
                     {
@@ -36,20 +36,20 @@ namespace MajorProject
                 {
                     return new EquationLine(table, ((Function)left).Argument(), ((Function)left).Inverse(right)).Solve();
                 }
-                else if (left is Operation)
+                else if (left is Operation op)
                 {
-                    Operation LHS = (Operation)left;
                     try
                     {
-                        Complex leftValue = LHS.GetLeft().Value();
-                        return LHS.isolateRight(table, right).Solve();
+                        // If left side of the operation is known, variable must be on the right
+                        Complex _ = op.GetLeft().Value();
+                        return op.IsolateRight(table, right).Solve();
                     }
                     catch (UnknownVariableException)
                     {
-                        Complex rightValue = LHS.GetRight().Value();
-                        return LHS.isolateLeft(table, right).Solve();
+                        // Otherwise, assume variable is on the left
+                        Complex _ = op.GetRight().Value();
+                        return op.IsolateLeft(table, right).Solve();
                     }
-                    //    new EquationLine(table, ((Function)left).Argument(), ((Function)left).Inverse(right)).Solve();
                 }
                 else
                 {

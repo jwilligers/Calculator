@@ -9,6 +9,42 @@ namespace MajorProject
         Scanner scanner;
         VariableTable table;
         FunctionTable functionTable;
+
+
+        static readonly Dictionary<string, UnaryFunctionType> UnaryFunctionMap =
+            new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "sin", UnaryFunctionType.Sin },
+            { "cos", UnaryFunctionType.Cos },
+            { "tan", UnaryFunctionType.Tan },
+
+            { "asin", UnaryFunctionType.Asin },
+            { "acos", UnaryFunctionType.Acos },
+            { "atan", UnaryFunctionType.Atan },
+
+            { "exp", UnaryFunctionType.Exp },
+            { "ln",  UnaryFunctionType.Ln },
+
+            { "sqrt",   UnaryFunctionType.Sqrt },
+            { "square", UnaryFunctionType.Square },
+            { "cbrt",   UnaryFunctionType.Cbrt },
+            { "cube",   UnaryFunctionType.Cube },
+
+            { "abs",  UnaryFunctionType.Abs },
+            { "conj", UnaryFunctionType.Conj },
+            { "re",   UnaryFunctionType.Re },
+            { "im",   UnaryFunctionType.Im },
+            { "arg",  UnaryFunctionType.Arg },
+
+            { "floor", UnaryFunctionType.Floor },
+            { "ceil",  UnaryFunctionType.Ceil },
+            { "round", UnaryFunctionType.Round },
+
+            { "inv", UnaryFunctionType.Inv }
+        };
+
+
+
         public Parser(Scanner _scanner, FunctionTable _functionTable, Boolean insideFunction = false, string argumentName = "")
         {
             scanner = _scanner;
@@ -127,19 +163,52 @@ namespace MajorProject
                 }
             }
             return first;
-        }   
+        }
         public Expression ReadFactor()
         {
+            // Handle unary minus
             if (scanner.Current().ToString() == "-")
             {
                 scanner.MoveOn();
                 Expression factor = ReadFactor();
                 return new Subtraction(new Number(new Complex(0.0)), factor);
-            } //same as 0-factor
-            else
-            {
-                return ReadCustomOperation();
             }
+
+            // Read the core atom / custom operation
+            Expression core = ReadCustomOperation();
+
+            // -----------------------------------------
+            // 1. SI UNIT SUFFIXES (e.g., 5m, 9.8m/s^2)
+            // -----------------------------------------
+            while (scanner.Current().GetTokenType() == TokenType.Variable)
+            {
+                string unitName = scanner.Current().ToString();
+
+                // If it's not a unit, stop
+                if (!UnitParser.TryParse(unitName, out Unit unit))
+                    break;
+
+                scanner.MoveOn();
+                core = new QuantityExpression(core, unit);
+            }
+
+            // -----------------------------------------
+            // 2. BASE DISPLAY OPERATOR (e.g., x @16)
+            // -----------------------------------------
+            if (scanner.Current().ToString() == "@")
+            {
+                scanner.MoveOn();
+
+                if (scanner.Current().GetTokenType() != TokenType.Number)
+                    throw new InputException("Base must be a number");
+
+                int numberBase = int.Parse(scanner.Current().ToString());
+                scanner.MoveOn();
+
+                core = new DisplayBaseExpression(core, numberBase);
+            }
+
+            return core;
         }
         public Expression ReadCustomOperation()
         {
@@ -179,110 +248,120 @@ namespace MajorProject
                 return first;
             }
         }
+
         public Expression ReadAtom()
         {
-            if (scanner.Current().GetTokenType() == TokenType.Number)
+            var token = scanner.Current();
+
+            // -----------------------------
+            // 1. NUMBER
+            // -----------------------------
+            if (token.GetTokenType() == TokenType.Number)
             {
-                Expression result = new Number(new Complex(Double.Parse(scanner.Current().ToString())));
+                var value = new Number(new Complex(double.Parse(token.ToString())));
                 scanner.MoveOn();
-                return result;
+                return value;
             }
-            else if (scanner.Current().GetTokenType() == TokenType.Variable)
+
+            // -----------------------------
+            // 2. VARIABLE OR FUNCTION NAME
+            // -----------------------------
+            if (token.GetTokenType() == TokenType.Variable)
             {
-                string name = scanner.Current().ToString();
+                string name = token.ToString();
                 scanner.MoveOn();
-                string[] variableList = { "e", "i", "pi" };
-                string[] functionsList = { "sin", "cos"};
-                if (functionTable.ContainsKey(name+"(x)"))
+
+                // -----------------------------------------
+                // 2A. FUNCTION CALL: name(...)
+                // -----------------------------------------
+                if (scanner.Current().ToString() == "(")
                 {
-                    Console.WriteLine("Key: " + name + " found.");
-                    return new CustomFunction(name, functionTable.lookUpEquation(name), ReadAtom());
+                    scanner.MoveOn(); // consume '('
+
+                    List<Expression> args = new List<Expression>();
+
+                    // Parse argument list
+                    if (scanner.Current().ToString() != ")")
+                    {
+                        args.Add(ReadExpression());
+
+                        while (scanner.Current().ToString() == ",")
+                        {
+                            scanner.MoveOn(); // consume comma
+                            args.Add(ReadExpression());
+                        }
+                    }
+
+                    if (scanner.Current().ToString() != ")")
+                        throw new InputException("Missing ')' in function call");
+
+                    scanner.MoveOn(); // consume ')'
+
+                    string lower = name.ToLower();
+
+                    // 1. Built-in unary function
+                    if (UnaryFunctionMap.TryGetValue(lower, out var unaryType))
+                    {
+                        if (args.Count != 1)
+                            throw new Exception($"{name}() takes exactly 1 argument");
+
+                        return new UnaryFunction(unaryType, args[0]);
+                    }
+
+                    // 2. Built-in multi-argument function
+                    if (MultiFunctionRegistry.Registry.ContainsKey(lower))
+                    {
+                        return new MultiFunction(name, args);
+                    }
+
+                    // 3. User-defined function (single argument for now)
+                    if (functionTable.TryGetValue(name, out var def))
+                    {
+                        return new CustomFunction(name, def, args);
+                    }
+
+                    throw new Exception($"Unknown function '{name}'");
                 }
 
-                switch (name.ToLower()) // special words that cannot be variables
+                // -----------------------------------------
+                // 2B. CONSTANTS
+                // -----------------------------------------
+                switch (name.ToLower())
                 {
-                    case "e": // constant e
-                        return new Number(new Complex(Math.E));
-                    case "i":
-                        return new Number(new Complex(0, 1));
-                    case "pi": //constant pi
-                        return new Number(new Complex(Math.PI));
-                    case "deg": //constant pi
-                        return new Number(new Complex(Math.PI/180));
-                    case "sin": // sin
-                        return new Sin(ReadAtom());
-                    case "cos": // cos
-                        return new Cos(ReadAtom());
-                    case "tan": // tan
-                        return new Tan(ReadAtom());
-                    case "sinh": // hyperbolic sin
-                        return new Sinh(ReadAtom());
-                    case "cosh": // hyperbolic cos
-                        return new Cosh(ReadAtom());
-                    case "tanh": // hyperbolic tan
-                        return new Tanh(ReadAtom());
-                    case "sech": // hyperbolic sec
-                        return new Sech(ReadAtom());
-                    case "csch": // hyperbolic cosec
-                        return new Csch(ReadAtom());
-                    case "coth": // hyperbolic cot
-                        return new Coth(ReadAtom());
-                    case "asin": // inverse sin
-                        return new ASin(ReadAtom());
-                    case "acos": // inverse cos
-                        return new ACos(ReadAtom());
-                    case "atan": // inverse tan
-                        return new ATan(ReadAtom());
-                    case "exp": // exponential
-                        return new Exp(ReadAtom());
-                    case "log": // log base 10
-                        return new Log(ReadAtom());
-                    case "ln": // log base e
-                        return new Ln(ReadAtom());
-                    case "fact": // Factorial
-                        return new Fact(ReadAtom());
-                    case "conj": // Conjugate
-                        return new Conj(ReadAtom());
-                    case "re": // Real component
-                        return new Re(ReadAtom());
-                    case "im": // Imaginary component
-                        return new Im(ReadAtom());
-                    case "arg": // Argument
-                        return new Arg(ReadAtom());
-                    case "sqrt": // Square Root
-                        return new Sqrt(ReadAtom());
-                    case "square": // Square
-                        return new Square(ReadAtom());
-                    case "abs": // Absolute Value
-                        return new Abs(ReadAtom());
-                    case "ceil": // Ceiling
-                        return new Ceil(ReadAtom());
-                    case "floor": // Floor
-                        return new Floor(ReadAtom());
-                    case "round": // Round
-                        return new Round(ReadAtom());
-                    case "inv": // Inverse
-                        return new Inv(ReadAtom());
-                    default:
-                        return new Variable(table, name);
-                   }      
+                    case "e": return new Number(new Complex(Math.E));
+                    case "i": return new Number(new Complex(0, 1));
+                    case "pi": return new Number(new Complex(Math.PI));
+                    case "deg": return new Number(new Complex(Math.PI / 180));
+                }
+
+                // -----------------------------------------
+                // 2C. VARIABLE
+                // -----------------------------------------
+                return new Variable(table, name);
             }
-            else
+
+            // -----------------------------
+            // 3. PARENTHESIZED EXPRESSION
+            // -----------------------------
+            if (token.ToString() == "(")
             {
-                if (!(scanner.Current().ToString() == "("))
-                {
-                    throw new InputException("Bad input");
-                }
                 scanner.MoveOn();
-                Expression result = ReadExpression();
-                if (!(scanner.Current().ToString() == ")"))
-                {
-                    throw new InputException("Bad input");
-                }
+                Expression inner = ReadExpression();
+
+                if (scanner.Current().ToString() != ")")
+                    throw new InputException("Missing ')'");
+
                 scanner.MoveOn();
-                return result; 
+                return inner;
             }
+
+            // -----------------------------
+            // 4. INVALID TOKEN
+            // -----------------------------
+            throw new InputException("Bad input");
         }
+
+
         public int lengthOfDictionary()
         {
             List<string> variables = new List<string>();
@@ -297,7 +376,7 @@ namespace MajorProject
         {
             List<string> functions = new List<string>();
             //System.Windows.Forms.MessageBox.Show("Count = "+table.Count.ToString());
-            foreach (KeyValuePair<string, Expression> pair in functionTable)
+            foreach (KeyValuePair<string, FunctionDefinition> pair in functionTable)
             {
                 functions.Add(pair.Key + " = " + pair.Value);
             }
@@ -305,15 +384,23 @@ namespace MajorProject
         }
         public string[] returnValues()
         {
-           List<string> variables = new List<string>();
-           //System.Windows.Forms.MessageBox.Show("Count = "+table.Count.ToString());
-           foreach (KeyValuePair<string,Complex> pair in table)
-           {
-               string number = pair.Value.ToString();
+            List<string> variables = new List<string>();
 
-               variables.Add(pair.Key + " = " + number);           
-           }
-           return variables.ToArray();
+            foreach (var pair in table)
+            {
+                string name = pair.Key;
+
+                // Build an expression so we can read its unit
+                Expression expr = new Variable(table, name);
+
+                string value = expr.Value().ToString();
+                string unit = expr.GetUnit().ToString();
+
+                // Pretty aligned output
+                variables.Add($"{name,-12} {value,-20} {unit}");
+            }
+
+            return variables.ToArray();
         }
         public double formatOutput(string key, double value)
         {

@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-	<LangVersion>9.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -89,12 +89,18 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Addition.cs" />
+    <Compile Include="BaseConverter.cs" />
+    <Compile Include="BaseStringComplex.cs" />
     <Compile Include="Calculator.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Calculator.Designer.cs">
       <DependentUpon>Calculator.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomFunction.cs" />
+    <Compile Include="DisplayBaseExpression.cs" />
+    <Compile Include="FunctionDefinition.cs" />
+    <Compile Include="Multifunction.cs" />
     <Compile Include="Permutation.cs" />
     <Compile Include="CommentLine.cs" />
     <Compile Include="Complex.cs" />
@@ -108,7 +114,9 @@
     <None Include="Polynomial\Polynomial.cs1" />
     <None Include="PolynomialLine.cs1" />
     <Compile Include="Combination.cs" />
+    <Compile Include="PrettyPrint.cs" />
     <Compile Include="Quantity.cs" />
+    <Compile Include="QuantityExpression.cs" />
     <Compile Include="Settings1.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
@@ -142,6 +150,7 @@
     <Compile Include="UnaryFunction.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Token.cs" />
+    <Compile Include="UnitParser.cs" />
     <Compile Include="UnknownVariableException.cs" />
     <Compile Include="Variable.cs" />
     <Compile Include="FunctionTable.cs" />

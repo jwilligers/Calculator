@@ -1,4 +1,5 @@
 ﻿using PolyLib;
+using System.Collections.Generic;
 
 namespace MajorProject
 {
@@ -6,18 +7,17 @@ namespace MajorProject
     {
         VariableTable table;
         string name;
-        Unit unit;
+
+        public Unit unit { get; set; } = new Unit(UnitType.None);
         public Variable(VariableTable _table, string _name)
         {
             this.table = _table;
             this.name = _name;
-            this.unit = new Unit(UnitType.None);
         }
         public Variable(VariableTable _table, string _name, Unit unit)
         {
             this.table = _table;
             this.name = _name;
-            this.unit = unit;
         }
 
         public bool IsSet()
@@ -41,5 +41,13 @@ namespace MajorProject
         {
             return name;
         }
+        public override Unit GetUnit()
+        {
+            return unit;
+        }
+
     }
+
+    class VariableUnitTable : Dictionary<string, Unit> { }
+
 }

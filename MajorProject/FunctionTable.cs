@@ -6,7 +6,7 @@ using System.IO;
 
 namespace MajorProject
 {
-    class FunctionTable:Dictionary<string,Expression>
+    class FunctionTable:Dictionary<string,FunctionDefinition>
     {
         public FunctionTable()
         {
@@ -16,13 +16,13 @@ namespace MajorProject
         {
             return ContainsKey(name);
         }
-        public Expression lookUpEquation(string name)
+        public FunctionDefinition lookUpEquation(string name)
         {
             return this[name+"(x)"];
         }
-        public void setValue(string name, Expression equation)
+        public void setValue(string name, FunctionDefinition definition)
         {
-            this[name] = equation;
+            this[name] = definition;
         }
         public void addBuiltinFunctions()
         {
@@ -57,7 +57,7 @@ namespace MajorProject
             if (line.Length>0 && line.Trim()[0] == '!') { 
                 return line;
             }
-            foreach (KeyValuePair<string, Expression> entry in this)
+            foreach (KeyValuePair<string, FunctionDefinition> entry in this)
             {
                 line = swapString(line, entry.Key);
             }
